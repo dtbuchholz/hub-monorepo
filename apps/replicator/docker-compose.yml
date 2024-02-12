@@ -28,7 +28,7 @@ services:
       - replicator-network
 
   postgres:
-    image: 'postgres:16-alpine'
+    image: 'dtbuchholz/textile-vaults-farcaster:latest' # Custom image with wal2json extension & Textile `vaults` CLI
     restart: unless-stopped
     ports:
       - '6541:5432' # Use a port unlikely to be in use so the example "Just Works"
@@ -36,6 +36,8 @@ services:
       - POSTGRES_DB=replicator
       - POSTGRES_USER=replicator
       - POSTGRES_PASSWORD=password
+      - TEXTILE_PRIVATE_KEY # Private key for creating & streaming to a Textile vault
+      - TEXTILE_VAULT_NAMESPACE # Namespace for the Textile vault, i.e., prefix to table name/publication
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
